@@ -12,7 +12,15 @@ import {Creations} from "./classes/creations";
                 const creations = new Creations({
                     selectorForSlider: '#app',
                     selectorLeftArrow: '#app1',
-                    selectorRightArrow: '#app2'
+                    selectorRightArrow: '#app2',
+                    sliderStyleSheet: {
+                        position: 'absolute',
+                        top: '0',
+                        left: '0',
+                        'z-index': '999',
+                        'backface-visibility': 'hidden',
+                        'will-change': 'transform'
+                    }
                 });
             }
         }

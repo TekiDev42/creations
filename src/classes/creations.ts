@@ -1,4 +1,5 @@
 import {calculateTarget} from "../utils/calculateTarget";
+import {Assign} from "../utils/ObjectAssign";
 
 export class Creations {
     slider: HTMLElement | null = null;
@@ -36,14 +37,7 @@ export class Creations {
             throw Error("RightArrow element doesn't exist");
         }
 
-        Object.assign(this.slider.style ,{
-            position: 'absolute',
-            top: '0',
-            left: '0',
-            'z-index': 999,
-            'backface-visibility': 'hidden',
-            'will-change': 'transform'
-        });
+        Assign<SliderStyleSheet>(this.slider, options.sliderStyleSheet);
 
         this.horizontalScroll.scrollRight = this.slider.getBoundingClientRect().width - window.innerWidth;
         this._events();
