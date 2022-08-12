@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist/",
+        "sourceMap": true,
+        "strict": true,
+        "noImplicitReturns": true,
+        "noImplicitAny": true,
+        "module": "es2020",
+        "moduleResolution": "node",
+        "target": "es2020",
+        "allowJs": true,
+        "experimentalDecorators": true
+    },
+    "include": [
+        "./types/**/*",
+        "./src/**/*"
+    ]
+}
