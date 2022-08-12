@@ -52,6 +52,30 @@ export class Creations {
         window.addEventListener('mousemove', this.mouseMove);
     }
 
+    /**
+     * UPDATES
+     */
+    _updateSlider = (): void => {
+        if(!this.slider || ! this.slider.isConnected) throw Error("Slider element doesn't exist");
+
+        this._updateValue();
+        this.changeDisplayArrow()
+
+        if(this.horizontalScroll.scrollValue === this.horizontalScroll.oldValue) {
+            if(this.raf) {
+                cancelAnimationFrame(this.raf);
+                this.raf = null;
+            }
+            return;
+        }
+
+        this.slider.style['transform'] = `translate3d(-${this.horizontalScroll.scrollValue}px, 0 ,0)`;
+
+        this.horizontalScroll.oldValue = this.horizontalScroll.scrollValue;
+
+        this.raf = requestAnimationFrame(this._updateSlider);
+    }
+
     _updateTarget = (delta: number) => {
         this.horizontalScroll.scrollTarget += delta;
 
@@ -62,6 +86,14 @@ export class Creations {
         });
     }
 
+    _updateValue = (): void => {
+        const value = (this.horizontalScroll.scrollTarget - this.horizontalScroll.scrollValue) * this.horizontalScroll.spring
+        this.horizontalScroll.scrollValue += parseFloat(value.toFixed(2));
+    }
+
+    /**
+     * EVENTS
+     */
     ArrowsPressed = (event: KeyboardEvent):void => {
         let delta = 0;
 
@@ -83,10 +115,28 @@ export class Creations {
         this._updateTarget(delta);
 
         if(!this.raf) {
-            this.raf = requestAnimationFrame(this.updateSlider);
+            this.raf = requestAnimationFrame(this._updateSlider);
         }
     }
 
+    mouseMove = (event: MouseEvent): void => {
+        if (this.isDown){
+            let delta = event.movementX * -1;
+            this._updateTarget(delta);
+
+            if(!this.raf) this.raf = requestAnimationFrame(this._updateSlider);
+        }
+    }
+
+    replaceVerticalScrollByHorizontal = ( event: WheelEvent ):void => {
+        this._updateTarget(event.deltaY);
+
+        if(!this.raf) this.raf = requestAnimationFrame(this._updateSlider);
+    }
+
+    /**
+     * OTHERS
+     */
     changeDisplayArrow = (): void => {
         if(!this.leftArrow || ! this.rightArrow) return;
 
@@ -103,46 +153,5 @@ export class Creations {
         } else {
             this.rightArrow.setAttribute('style', 'display: block;');
         }
-    }
-
-    mouseMove = (event: MouseEvent): void => {
-        if (this.isDown){
-            let delta = event.movementX * -1;
-            this._updateTarget(delta);
-
-            if(!this.raf) this.raf = requestAnimationFrame(this.updateSlider);
-        }
-    }
-
-    replaceVerticalScrollByHorizontal = ( event: WheelEvent ):void => {
-        this._updateTarget(event.deltaY);
-
-        if(!this.raf) this.raf = requestAnimationFrame(this.updateSlider);
-    }
-
-    updateSlider = (): void => {
-        if(!this.slider || ! this.slider.isConnected) throw Error("Slider element doesn't exist");
-
-        this.updateValues();
-        this.changeDisplayArrow()
-
-        if(this.horizontalScroll.scrollValue === this.horizontalScroll.oldValue) {
-            if(this.raf) {
-                cancelAnimationFrame(this.raf);
-                this.raf = null;
-            }
-            return;
-        }
-
-        this.slider.style['transform'] = `translate3d(-${this.horizontalScroll.scrollValue}px, 0 ,0)`;
-
-        this.horizontalScroll.oldValue = this.horizontalScroll.scrollValue;
-
-        this.raf = requestAnimationFrame(this.updateSlider);
-    }
-
-    updateValues = (): void => {
-        const value = (this.horizontalScroll.scrollTarget - this.horizontalScroll.scrollValue) * this.horizontalScroll.spring
-        this.horizontalScroll.scrollValue += parseFloat(value.toFixed(2));
     }
 }
