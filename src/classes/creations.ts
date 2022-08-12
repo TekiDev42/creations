@@ -5,9 +5,10 @@ export class Creations {
     leftArrow: HTMLElement | null = null;
     rightArrow: HTMLElement | null = null;
 
-    #raf: number | null = null; /** RequestAnimationFrame */
-    #isDown: boolean | null = false;
-    #arrowHoverRAF: number | null = null; /** RequestAnimationFrame */
+    raf: number | null = null; /** RequestAnimationFrame */
+    arrowHoverRAF: number | null = null; /** RequestAnimationFrame */
+
+    isDown: boolean | null = false;
 
     horizontalScroll: HorizontalScroll = {
         scrollValue: 0,
@@ -45,18 +46,51 @@ export class Creations {
         });
 
         this.horizontalScroll.scrollRight = this.slider.getBoundingClientRect().width - window.innerWidth;
-        this.events();
+        this._events();
     }
 
-    events(): void{
+    _events(): void{
         window.addEventListener('wheel', this.replaceVerticalScrollByHorizontal.bind(this) );
+        window.addEventListener('keydown', this.ArrowsPressed.bind(this) );
     }
 
-    updateScroll () {
-        if(!this.slider || !this.leftArrow || ! this.rightArrow) return;
+    _updateTarget(delta: number){
+        this.horizontalScroll.scrollTarget += delta;
 
-        const value = (this.horizontalScroll.scrollTarget - this.horizontalScroll.scrollValue) * this.horizontalScroll.spring
-        this.horizontalScroll.scrollValue += parseFloat(value.toFixed(2));
+        this.horizontalScroll.scrollTarget = calculateTarget(delta, {
+            target: this.horizontalScroll.scrollTarget,
+            left: this.horizontalScroll.scrollLeft,
+            right: this.horizontalScroll.scrollRight
+        });
+    }
+
+    ArrowsPressed(event: KeyboardEvent):void {
+        let delta = 0;
+
+        switch (event.key){
+            case 'ArrowUp':
+            case 'ArrowLeft':
+                delta = -100;
+                break;
+
+            case 'ArrowDown':
+            case 'ArrowRight':
+                delta = 100;
+                break;
+
+            default:
+                return void 0;
+        }
+
+        this._updateTarget(delta);
+
+        if(!this.raf) {
+            this.raf = requestAnimationFrame(this.updateScroll.bind(this));
+        }
+    }
+
+    changeDisplayArrow(): void {
+        if(!this.leftArrow || ! this.rightArrow) return;
 
         if( this.horizontalScroll.scrollValue > 0){
             this.leftArrow.setAttribute('style', 'display: block;');
@@ -71,11 +105,24 @@ export class Creations {
         } else {
             this.rightArrow.setAttribute('style', 'display: block;');
         }
+    }
+
+    replaceVerticalScrollByHorizontal ( event: WheelEvent ) {
+        this._updateTarget(event.deltaY);
+
+        if(!this.raf) this.raf = requestAnimationFrame(this.updateScroll.bind(this));
+    }
+
+    updateScroll (): void {
+        if(!this.slider || ! this.slider.isConnected) throw Error("Slider element doesn't exist");
+
+        this.updateValues();
+        this.changeDisplayArrow()
 
         if(this.horizontalScroll.scrollValue === this.horizontalScroll.oldValue) {
-            if(this.#raf) {
-                cancelAnimationFrame(this.#raf);
-                this.#raf = null;
+            if(this.raf) {
+                cancelAnimationFrame(this.raf);
+                this.raf = null;
             }
             return;
         }
@@ -84,17 +131,11 @@ export class Creations {
 
         this.horizontalScroll.oldValue = this.horizontalScroll.scrollValue;
 
-        this.#raf = requestAnimationFrame(this.updateScroll.bind(this));
+        this.raf = requestAnimationFrame(this.updateScroll.bind(this));
     }
 
-    replaceVerticalScrollByHorizontal ( event: WheelEvent ) {
-        this.horizontalScroll.scrollTarget += event.deltaY;
-        this.horizontalScroll.scrollTarget = calculateTarget(event.deltaY, {
-            target: this.horizontalScroll.scrollTarget,
-            left: this.horizontalScroll.scrollLeft,
-            right: this.horizontalScroll.scrollRight
-        });
-
-        if(!this.#raf) this.#raf = requestAnimationFrame(this.updateScroll.bind(this));
+    updateValues(): void {
+        const value = (this.horizontalScroll.scrollTarget - this.horizontalScroll.scrollValue) * this.horizontalScroll.spring
+        this.horizontalScroll.scrollValue += parseFloat(value.toFixed(2));
     }
 }
