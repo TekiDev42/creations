@@ -1,13 +1,13 @@
 import {calculateTarget} from "../utils/calculateTarget";
 import {Assign} from "../utils/ObjectAssign";
+import {Arrow} from "./Arrow";
 
-export class Creations {
+export class Slider {
     slider: HTMLElement | null = null;
-    leftArrow: HTMLElement | null = null;
-    rightArrow: HTMLElement | null = null;
+    leftArrow: Arrow;
+    rightArrow: Arrow;
 
     raf: number | null = null; /** RequestAnimationFrame */
-    arrowHoverRAF: number | null = null; /** RequestAnimationFrame */
 
     isDown: boolean | null = false;
 
@@ -22,19 +22,11 @@ export class Creations {
 
     constructor(options: Options) {
         this.slider = document.querySelector<HTMLElement>(options.selectorForSlider);
-        this.leftArrow = document.querySelector<HTMLElement>(options.selectorLeftArrow);
-        this.rightArrow = document.querySelector<HTMLElement>(options.selectorRightArrow);
+        this.leftArrow = new Arrow(options.selectorLeftArrow);
+        this.rightArrow = new Arrow(options.selectorRightArrow);
 
         if(!this.slider){
             throw Error("Slider element doesn't exist");
-        }
-
-        if(!this.leftArrow){
-            throw Error("LeftArrow element doesn't exist");
-        }
-
-        if(!this.rightArrow){
-            throw Error("RightArrow element doesn't exist");
         }
 
         Assign<SliderStyleSheet>(this.slider, options.sliderStyleSheet);
@@ -138,7 +130,7 @@ export class Creations {
      * OTHERS
      */
     changeDisplayArrow = (): void => {
-        if(!this.leftArrow || ! this.rightArrow) return;
+        /*if(!this.leftArrow || ! this.rightArrow) return;
 
         if( this.horizontalScroll.scrollValue > 0){
             this.leftArrow.setAttribute('style', 'display: block;');
@@ -152,6 +144,6 @@ export class Creations {
             this.rightArrow.setAttribute('style', 'display: none;');
         } else {
             this.rightArrow.setAttribute('style', 'display: block;');
-        }
+        }*/
     }
 }

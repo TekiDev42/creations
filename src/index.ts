@@ -1,6 +1,6 @@
 "use strict";
 
-import {Creations} from "./classes/creations";
+import {Slider} from "./classes/slider";
 
 ( async (): Promise<void> => {
     document.addEventListener("readystatechange", (): void => {
@@ -9,7 +9,7 @@ import {Creations} from "./classes/creations";
             const mediaQuery: MediaQueryList = window.matchMedia('(min-width: 1024px)');
 
             if ( mediaQuery.matches ) {
-                const creations = new Creations({
+                const creations = new Slider({
                     selectorForSlider: '#app',
                     selectorLeftArrow: '#app1',
                     selectorRightArrow: '#app2',
