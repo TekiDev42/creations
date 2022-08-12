@@ -49,7 +49,7 @@ export class Creations {
 
         window.addEventListener('mousedown', (evt) => this.isDown = true );
         window.addEventListener('mouseup', (evt) => this.isDown = false );
-        /*window.addEventListener('mousemove', this.mouseMove);*/
+        window.addEventListener('mousemove', this.mouseMove);
     }
 
     _updateTarget = (delta: number) => {
@@ -83,7 +83,7 @@ export class Creations {
         this._updateTarget(delta);
 
         if(!this.raf) {
-            this.raf = requestAnimationFrame(this.updateScroll);
+            this.raf = requestAnimationFrame(this.updateSlider);
         }
     }
 
@@ -105,13 +105,22 @@ export class Creations {
         }
     }
 
+    mouseMove = (event: MouseEvent): void => {
+        if (this.isDown){
+            let delta = event.movementX * -1;
+            this._updateTarget(delta);
+
+            if(!this.raf) this.raf = requestAnimationFrame(this.updateSlider);
+        }
+    }
+
     replaceVerticalScrollByHorizontal = ( event: WheelEvent ):void => {
         this._updateTarget(event.deltaY);
 
-        if(!this.raf) this.raf = requestAnimationFrame(this.updateScroll);
+        if(!this.raf) this.raf = requestAnimationFrame(this.updateSlider);
     }
 
-    updateScroll = (): void => {
+    updateSlider = (): void => {
         if(!this.slider || ! this.slider.isConnected) throw Error("Slider element doesn't exist");
 
         this.updateValues();
@@ -129,7 +138,7 @@ export class Creations {
 
         this.horizontalScroll.oldValue = this.horizontalScroll.scrollValue;
 
-        this.raf = requestAnimationFrame(this.updateScroll);
+        this.raf = requestAnimationFrame(this.updateSlider);
     }
 
     updateValues = (): void => {
