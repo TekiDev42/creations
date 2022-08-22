@@ -2,6 +2,7 @@ import {calculateTarget} from "../utils/calculateTarget";
 import {Assign} from "../utils/ObjectAssign";
 import {Arrow} from "./Arrow";
 
+
 export class Slider {
     slider: HTMLElement | null = null;
     leftArrow: Arrow;
@@ -76,7 +77,7 @@ export class Slider {
         this.raf = requestAnimationFrame(this._updateSlider);
     }
 
-    _updateTarget = (delta: number) => {
+    _updateTarget = (delta: number): void => {
         this.horizontalScroll.scrollTarget += delta;
 
         this.horizontalScroll.scrollTarget = calculateTarget(delta, {
@@ -104,7 +105,7 @@ export class Slider {
     /**
      * EVENTS
      */
-    arrowsKeysPressed = (event: KeyboardEvent):void => {
+    arrowsKeysPressed = (event: KeyboardEvent): void => {
         let delta = 0;
 
         switch (event.key){
@@ -138,7 +139,7 @@ export class Slider {
         }
     }
 
-    replaceVerticalScrollByHorizontal = ( event: WheelEvent ):void => {
+    replaceVerticalScrollByHorizontal = ( event: WheelEvent ): void => {
         this._updateTarget(event.deltaY);
 
         if(!this.raf) this.raf = requestAnimationFrame(this._updateSlider);
@@ -148,20 +149,25 @@ export class Slider {
      * OTHERS
      */
     changeDisplayArrow = (): void => {
-        /*if(!this.leftArrow || ! this.rightArrow) return;
+        if(!this.leftArrow || ! this.rightArrow) return;
 
-        if( this.horizontalScroll.scrollValue > 0){
-            this.leftArrow.setAttribute('style', 'display: block;');
-        }
+        let leftDisplay = 'none';
+        let rightDisplay = 'block';
 
-        if ( this.horizontalScroll.scrollValue < 1){
-            this.leftArrow.setAttribute('style', 'display: none;');
+        if( this.horizontalScroll.scrollValue >= 1){
+            leftDisplay = 'block';
         }
 
         if( this.horizontalScroll.scrollValue >= (this.horizontalScroll.scrollRight - 1)){
-            this.rightArrow.setAttribute('style', 'display: none;');
-        } else {
-            this.rightArrow.setAttribute('style', 'display: block;');
-        }*/
+            rightDisplay = 'none';
+        }
+
+        Assign(this.leftArrow.arrowElement, {
+            'display': leftDisplay
+        });
+
+        Assign(this.rightArrow.arrowElement, {
+            'display': rightDisplay
+        });
     }
 }

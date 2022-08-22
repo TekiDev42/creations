@@ -2,7 +2,7 @@ import {Slider} from "./slider";
 import {Assign} from "../utils/ObjectAssign";
 
 export class Arrow {
-    arrowElement: Element | null = null;
+    arrowElement: HTMLElement;
 
     slider: Slider;
     direction: number = -1;
@@ -12,10 +12,10 @@ export class Arrow {
         let _element = null;
 
         if(selector.length > 0) {
-            _element = document.querySelector(selector);
+            _element = document.querySelector<HTMLElement>(selector);
         }
 
-        if(_element instanceof Element)
+        if(_element instanceof HTMLElement)
             this.arrowElement = _element;
         else {
             this.arrowElement = this.createArrow(direction);
@@ -25,11 +25,11 @@ export class Arrow {
         this.direction = direction === 'right' ? 1 : -1;
     }
 
-    createArrow = (direction: string): Element => {
-        const arrowElement = document.createElement('div');
+    createArrow = (direction: string): HTMLElement => {
+        const arrowElement = document.createElement('div') as HTMLElement;
         arrowElement.id = direction;
 
-        const pos = direction === 'left' ? {left: '10px'} : {right: '10px'};
+        const pos = direction === 'left' ? {display: 'none', left: '10px'} : {right: '10px'};
 
         const style = {...{
             'position': 'absolute',

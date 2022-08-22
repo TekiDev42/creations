@@ -9,7 +9,8 @@
         "moduleResolution": "node",
         "target": "es2020",
         "allowJs": true,
-        "experimentalDecorators": true
+        "experimentalDecorators": true,
+        "declaration": true
     },
     "include": [
         "./types/**/*",

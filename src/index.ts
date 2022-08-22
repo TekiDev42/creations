@@ -22,6 +22,5 @@ import {Slider} from "./classes/slider";
                 });
             }
         }
-
     });
 })();
