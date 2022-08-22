@@ -1,5 +1,9 @@
 import {calculateTarget} from "../utils/calculateTarget";
 import {Assign} from "../utils/ObjectAssign";
+import {deltaFromKey} from "../utils/deltaFromKey";
+
+import * as DefaultOptions from '../options/slider';
+
 import {Arrow} from "./Arrow";
 
 export class Slider {
@@ -12,22 +16,8 @@ export class Slider {
 
     isDown: boolean = false;
 
-    horizontalScroll: HorizontalScroll = {
-        scrollValue: 0,
-        scrollTarget: 0,
-        scrollLeft: 0,
-        scrollRight: 0,
-        spring: 0.07,
-        oldValue: 0,
-    }
-
-    speedOptions: SpeedOptions = {
-        onClick: 200,
-        mouseMove: 1,
-        onHover: 15,
-        onScroll: 1,
-        keyPressed: 1
-    };
+    horizontalScroll = DefaultOptions.horizontalScroll
+    speedOptions = DefaultOptions.speedOptions
 
     constructor(options: Options) {
         const slider = document.querySelector<HTMLElement>(options.selectorForSlider);
@@ -51,12 +41,12 @@ export class Slider {
     }
 
     _events = (): void => {
-        window.addEventListener('wheel', this.replaceVerticalScrollByHorizontal );
+        this.slider.addEventListener('wheel', this.replaceVerticalScrollByHorizontal );
         window.addEventListener('keydown', this.arrowsKeysPressed );
 
-        window.addEventListener('mousedown', () => this.isDown = true );
-        window.addEventListener('mouseup', () => this.isDown = false );
-        window.addEventListener('mousemove', this.mouseMove);
+        this.slider.addEventListener('mousedown', () => this.isDown = true );
+        this.slider.addEventListener('mouseup', () => this.isDown = false );
+        this.slider.addEventListener('mousemove', this.mouseMove);
 
         this.rightArrow.
             arrowElement?.
@@ -192,12 +182,12 @@ export class Slider {
             rightDisplay = 'none';
         }
 
-        Assign(this.leftArrow.arrowElement, {
-            'display': leftDisplay
+        Assign<ArrowStyleSheet>(this.leftArrow.arrowElement, {
+            display: leftDisplay
         });
 
-        Assign(this.rightArrow.arrowElement, {
-            'display': rightDisplay
+        Assign<ArrowStyleSheet>(this.rightArrow.arrowElement, {
+            display: rightDisplay
         });
     }
 

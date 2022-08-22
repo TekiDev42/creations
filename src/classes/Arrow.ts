@@ -35,18 +35,18 @@ export class Arrow {
         const position = direction === 'left' ? {display: 'none', left: '10px'} : {right: '10px'};
 
         const style = {
-            'position': 'absolute',
+            position: 'absolute',
             'justify-content': 'center',
             'align-items': 'center',
-            'width': '50px',
-            'height': '50px',
-            'top': 'calc(50% - (50px/2))',
+            width: '50px',
+            height: '50px',
+            top: 'calc(50% - (50px/2))',
             'z-index': 1,
-            'cursor': 'pointer',
+            cursor: 'pointer',
             ...position
         }
 
-        Assign(arrowElement, style);
+        Assign<ArrowStyleSheet>(arrowElement, style);
 
         return arrowElement;
     }

@@ -1,4 +1,4 @@
-const deltaFromKey = (key: string): number => {
+export const deltaFromKey = (key: string): number => {
     let delta = 0;
 
     switch (key){

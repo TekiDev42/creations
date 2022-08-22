@@ -6,7 +6,14 @@ type HorizontalScroll = {
     spring: number,
     oldValue: number,
 }
-
+/**
+ * Default values<br>
+ * onClick: 200<br>
+ * mouseMove: 1<br>
+ * onHover: 15<br>
+ * onScroll: 1<br>
+ * keyPressed: 1
+ */
 type SpeedOptions = {
     onClick: number,
     mouseMove: number,
@@ -22,6 +29,18 @@ interface SliderStyleSheet {
     'z-index': string | number,
     'backface-visibility': string,
     'will-change': string,
+}
+
+interface ArrowStyleSheet {
+    position?: string,
+    'justify-content'?: string,
+    'align-items'?: string,
+    width?: string,
+    height?: string,
+    top?: string,
+    'z-index'?: number,
+    cursor?: string,
+    display?: string,
 }
 
 type Options = {

@@ -7,7 +7,7 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "clean": "rm dist/bundle.js",
+    "clean": "rm dist/slider.min.js",
     "dev": "webpack --watch --mode development",
     "prod": "webpack --mode production"
   },
