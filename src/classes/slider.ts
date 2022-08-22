@@ -21,6 +21,13 @@ export class Slider {
         oldValue: 0,
     }
 
+    speedOptions: SpeedOptions = {
+        onClick: 200,
+        mouseMove: 1,
+        onHover: 15,
+        onScroll: 1
+    };
+
     constructor(options: Options) {
         const slider = document.querySelector<HTMLElement>(options.selectorForSlider);
 
@@ -33,6 +40,10 @@ export class Slider {
         this.rightArrow = new Arrow(options.selectorRightArrow ?? '', 'right', this);
 
         Assign<SliderStyleSheet>(this.slider, options.sliderStyleSheet);
+
+        if (options.speedOptions){
+            this.speedOptions = options.speedOptions;
+        }
 
         this.horizontalScroll.scrollRight = this.slider.getBoundingClientRect().width - window.innerWidth;
         this._events();
@@ -73,7 +84,7 @@ export class Slider {
         if(!this.slider || ! this.slider.isConnected) throw Error("Slider element doesn't exist");
 
         this._updateValue();
-        this.changeDisplayArrow()
+        this.changeDisplayArrow();
 
         if(this.horizontalScroll.scrollValue === this.horizontalScroll.oldValue) {
             if(this.raf) {
@@ -84,9 +95,7 @@ export class Slider {
         }
 
         this.slider.style['transform'] = `translate3d(-${this.horizontalScroll.scrollValue}px, 0 ,0)`;
-
         this.horizontalScroll.oldValue = this.horizontalScroll.scrollValue;
-
         this.raf = requestAnimationFrame(this._updateSlider);
     }
 
@@ -109,7 +118,7 @@ export class Slider {
     // EVENTS
 
     arrowClicked = (direction: number): void => {
-        let delta = 200 * direction;
+        let delta = this.speedOptions.onClick * direction;
 
         this._updateTarget(delta);
 
@@ -143,9 +152,8 @@ export class Slider {
                 return;
             }
 
-            let delta = 15 * direction;
+            let delta = this.speedOptions.onHover * direction;
             this._updateTarget(delta);
-
             this.arrowHoverRAF = requestAnimationFrame(animation)
         }
 
@@ -158,7 +166,7 @@ export class Slider {
 
     mouseMove = (event: MouseEvent): void => {
         if (this.isDown){
-            let delta = event.movementX * -1;
+            let delta = (event.movementX * -1) * this.speedOptions.mouseMove;
             this._updateTarget(delta);
 
             if(!this.raf) this.raf = requestAnimationFrame(this._updateSlider);
@@ -166,7 +174,7 @@ export class Slider {
     }
 
     replaceVerticalScrollByHorizontal = ( event: WheelEvent ): void => {
-        this._updateTarget(event.deltaY);
+        this._updateTarget(event.deltaY * this.speedOptions.onScroll);
 
         if(!this.raf) this.raf = requestAnimationFrame(this._updateSlider);
     }

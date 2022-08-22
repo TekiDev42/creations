@@ -7,6 +7,13 @@ type HorizontalScroll = {
     oldValue: number,
 }
 
+type SpeedOptions = {
+    onClick: number,
+    mouseMove: number,
+    onHover: number,
+    onScroll: number
+}
+
 interface SliderStyleSheet {
     position: string,
     top: string,
@@ -20,5 +27,6 @@ type Options = {
     selectorForSlider: string,
     selectorLeftArrow?: string,
     selectorRightArrow?: string,
-    sliderStyleSheet: SliderStyleSheet
+    sliderStyleSheet: SliderStyleSheet,
+    speedOptions?: SpeedOptions
 }

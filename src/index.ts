@@ -20,7 +20,7 @@ import {Slider} from "./classes/slider";
                         'z-index': '0',
                         'backface-visibility': 'hidden',
                         'will-change': 'transform'
-                    }
+                    },
                 });
             }
         }
