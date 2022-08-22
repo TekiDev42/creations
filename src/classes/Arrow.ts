@@ -29,9 +29,9 @@ export class Arrow {
         const arrowElement = document.createElement('div') as HTMLElement;
         arrowElement.id = direction;
 
-        const pos = direction === 'left' ? {display: 'none', left: '10px'} : {right: '10px'};
+        const position = direction === 'left' ? {display: 'none', left: '10px'} : {right: '10px'};
 
-        const style = {...{
+        const style = {
             'position': 'absolute',
             'width': '50px',
             'height': '50px',
@@ -39,8 +39,7 @@ export class Arrow {
             'background': 'black',
             'z-index': 1,
             'cursor': 'pointer',
-        },
-        ...pos
+            ...position
         }
 
         Assign(arrowElement, style);
