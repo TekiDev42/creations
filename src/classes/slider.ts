@@ -25,7 +25,8 @@ export class Slider {
         onClick: 200,
         mouseMove: 1,
         onHover: 15,
-        onScroll: 1
+        onScroll: 1,
+        keyPressed: 1
     };
 
     constructor(options: Options) {
@@ -128,17 +129,12 @@ export class Slider {
     }
 
     arrowsKeysPressed = (event: KeyboardEvent): void => {
-        const delta = deltaFromKey(event.key)
-        this._updateTarget(delta);
+        const delta = deltaFromKey(event.key);
+        this._updateTarget(delta * this.speedOptions.keyPressed);
 
         if(!this.raf) {
             this.raf = requestAnimationFrame(this._updateSlider);
         }
-    }
-
-    stopRAF = (): void => {
-        cancelAnimationFrame(this.arrowHoverRAF);
-        this.arrowHoverRAF = 0;
     }
 
     arrowHover = (direction: number) => {
@@ -203,5 +199,10 @@ export class Slider {
         Assign(this.rightArrow.arrowElement, {
             'display': rightDisplay
         });
+    }
+
+    stopRAF = (): void => {
+        cancelAnimationFrame(this.arrowHoverRAF);
+        this.arrowHoverRAF = 0;
     }
 }

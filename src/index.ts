@@ -21,6 +21,7 @@ import {Slider} from "./classes/slider";
                         'backface-visibility': 'hidden',
                         'will-change': 'transform'
                     },
+                    // speedOptions: {}
                 });
             }
         }

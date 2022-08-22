@@ -11,7 +11,8 @@ type SpeedOptions = {
     onClick: number,
     mouseMove: number,
     onHover: number,
-    onScroll: number
+    onScroll: number,
+    keyPressed: number
 }
 
 interface SliderStyleSheet {
