@@ -37,11 +37,19 @@ export class Slider {
 
     _events = (): void => {
         window.addEventListener('wheel', this.replaceVerticalScrollByHorizontal );
-        window.addEventListener('keydown', this.ArrowsKeysPressed );
+        window.addEventListener('keydown', this.arrowsKeysPressed );
 
         window.addEventListener('mousedown', () => this.isDown = true );
         window.addEventListener('mouseup', () => this.isDown = false );
         window.addEventListener('mousemove', this.mouseMove);
+
+        this.rightArrow.arrowElement?.addEventListener('click', () => this.arrowClicked(this.rightArrow.direction));
+        this.rightArrow.arrowElement?.addEventListener('mouseenter', () => void 0);
+        this.rightArrow.arrowElement?.addEventListener('mouseleave', () => void 0);
+
+        this.leftArrow.arrowElement?.addEventListener('click', () => this.arrowClicked(this.leftArrow.direction));
+        this.leftArrow.arrowElement?.addEventListener('mouseenter', () => void 0);
+        this.leftArrow.arrowElement?.addEventListener('mouseleave', () => void 0);
     }
 
     /**
@@ -83,10 +91,20 @@ export class Slider {
         this.horizontalScroll.scrollValue += parseFloat(value.toFixed(2));
     }
 
+    arrowClicked = (sens: number): void => {
+        let delta = 200 * sens;
+
+        this._updateTarget(delta);
+
+        if(!this.raf) {
+            this.raf = requestAnimationFrame(this._updateSlider);
+        }
+    }
+
     /**
      * EVENTS
      */
-    ArrowsKeysPressed = (event: KeyboardEvent):void => {
+    arrowsKeysPressed = (event: KeyboardEvent):void => {
         let delta = 0;
 
         switch (event.key){

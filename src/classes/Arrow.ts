@@ -2,7 +2,6 @@ import {Slider} from "./slider";
 import {Assign} from "../utils/ObjectAssign";
 
 export class Arrow {
-    // arrowHoverRAF: number | null = null; /** RequestAnimationFrame */
     arrowElement: Element | null = null;
 
     slider: Slider;
@@ -24,7 +23,6 @@ export class Arrow {
 
         this.slider.slider?.parentElement?.append(this.arrowElement)
         this.direction = direction === 'right' ? 1 : -1;
-        this.events();
     }
 
     createArrow = (direction: string): Element => {
@@ -40,6 +38,7 @@ export class Arrow {
             'top': 'calc(50% - (50px/2))',
             'background': 'black',
             'z-index': 1,
+            'cursor': 'pointer',
         },
         ...pos
         }
@@ -48,11 +47,4 @@ export class Arrow {
 
         return arrowElement;
     }
-
-    events = (): void => {
-        this.arrowElement?.addEventListener('click', () => void 0);
-        this.arrowElement?.addEventListener('mouseenter', () => void 0);
-        this.arrowElement?.addEventListener('mouseleave', () => void 0);
-    }
-
 }
