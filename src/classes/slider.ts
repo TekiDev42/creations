@@ -108,8 +108,8 @@ export class Slider {
 
     // EVENTS
 
-    arrowClicked = (sens: number): void => {
-        let delta = 200 * sens;
+    arrowClicked = (direction: number): void => {
+        let delta = 200 * direction;
 
         this._updateTarget(delta);
 
@@ -148,7 +148,7 @@ export class Slider {
         this.arrowHoverRAF = 0;
     }
 
-    arrowHover = (sens: number) => {
+    arrowHover = (direction: number) => {
         if(this.arrowHoverRAF) {
             return;
         }
@@ -159,7 +159,7 @@ export class Slider {
                 return;
             }
 
-            let delta = 15 * sens;
+            let delta = 15 * direction;
             this._updateTarget(delta);
 
             this.arrowHoverRAF = requestAnimationFrame(animation)

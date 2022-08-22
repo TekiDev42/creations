@@ -11,6 +11,8 @@ import {Slider} from "./classes/slider";
             if ( mediaQuery.matches ) {
                 new Slider({
                     selectorForSlider: '#slider',
+                    // selectorLeftArrow?: string,
+                    // selectorRightArrow?: string,
                     sliderStyleSheet: {
                         position: 'absolute',
                         top: '0',
