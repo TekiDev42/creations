@@ -7,7 +7,8 @@ export class Slider {
     leftArrow: Arrow;
     rightArrow: Arrow;
 
-    raf: number | null = null; /** RequestAnimationFrame */
+    raf: number = 0; /** RequestAnimationFrame */
+    arrowHoverRAF: number = 0; /** RequestAnimationFrame */
 
     isDown: boolean | null = false;
 
@@ -48,15 +49,21 @@ export class Slider {
             arrowElement?.
             addEventListener('click', () => this.arrowClicked(this.rightArrow.direction));
 
-        this.rightArrow.arrowElement?.addEventListener('mouseenter', () => void 0);
-        this.rightArrow.arrowElement?.addEventListener('mouseleave', () => void 0);
+        this.rightArrow.
+            arrowElement?.
+            addEventListener('mouseenter', () => this.arrowHover(this.rightArrow.direction));
+
+        this.rightArrow.arrowElement?.addEventListener('mouseleave', () => this.stopRAF());
 
         this.leftArrow.
             arrowElement?.
             addEventListener('click', () => this.arrowClicked(this.leftArrow.direction));
 
-        this.leftArrow.arrowElement?.addEventListener('mouseenter', () => void 0);
-        this.leftArrow.arrowElement?.addEventListener('mouseleave', () => void 0);
+        this.leftArrow.
+            arrowElement?.
+            addEventListener('mouseenter', () => this.arrowHover(this.leftArrow.direction));
+
+        this.leftArrow.arrowElement?.addEventListener('mouseleave', () => this.stopRAF());
     }
 
     /**
@@ -71,7 +78,7 @@ export class Slider {
         if(this.horizontalScroll.scrollValue === this.horizontalScroll.oldValue) {
             if(this.raf) {
                 cancelAnimationFrame(this.raf);
-                this.raf = null;
+                this.raf = 0;
             }
             return;
         }
@@ -130,6 +137,35 @@ export class Slider {
         }
 
         this._updateTarget(delta);
+
+        if(!this.raf) {
+            this.raf = requestAnimationFrame(this._updateSlider);
+        }
+    }
+
+    stopRAF = () => {
+        cancelAnimationFrame(this.arrowHoverRAF);
+        this.arrowHoverRAF = 0;
+    }
+
+    arrowHover = (sens: number) => {
+        if(this.arrowHoverRAF) {
+            return;
+        }
+
+        const animation = () => {
+            if( ! this.arrowHoverRAF ) {
+                this.stopRAF();
+                return;
+            }
+
+            let delta = 15 * sens;
+            this._updateTarget(delta);
+
+            this.arrowHoverRAF = requestAnimationFrame(animation)
+        }
+
+        this.arrowHoverRAF = requestAnimationFrame(animation)
 
         if(!this.raf) {
             this.raf = requestAnimationFrame(this._updateSlider);
