@@ -194,10 +194,10 @@ export class Slider {
         if(!this.leftArrow || ! this.rightArrow) return;
 
         let leftDisplay = 'none';
-        let rightDisplay = 'block';
+        let rightDisplay = 'flex';
 
         if( this.horizontalScroll.scrollValue >= 1){
-            leftDisplay = 'block';
+            leftDisplay = 'flex';
         }
 
         if( this.horizontalScroll.scrollValue >= (this.horizontalScroll.scrollRight - 1)){

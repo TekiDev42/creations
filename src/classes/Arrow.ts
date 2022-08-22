@@ -1,6 +1,8 @@
 import {Slider} from "./slider";
 import {Assign} from "../utils/ObjectAssign";
 
+import * as Arrows from '../svg/arrows';
+
 export class Arrow {
     arrowElement: HTMLElement;
 
@@ -28,15 +30,17 @@ export class Arrow {
     createArrow = (direction: string): HTMLElement => {
         const arrowElement = document.createElement('div') as HTMLElement;
         arrowElement.id = direction;
+        arrowElement.innerHTML = direction === 'left' ? Arrows.left() : Arrows.right();
 
         const position = direction === 'left' ? {display: 'none', left: '10px'} : {right: '10px'};
 
         const style = {
             'position': 'absolute',
+            'justify-content': 'center',
+            'align-items': 'center',
             'width': '50px',
             'height': '50px',
             'top': 'calc(50% - (50px/2))',
-            'background': 'black',
             'z-index': 1,
             'cursor': 'pointer',
             ...position
