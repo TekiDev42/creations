@@ -3,14 +3,14 @@ import {Assign} from "../utils/ObjectAssign";
 import {Arrow} from "./Arrow";
 
 export class Slider {
-    slider: HTMLElement | null = null;
+    slider: HTMLElement;
     leftArrow: Arrow;
     rightArrow: Arrow;
 
     raf: number = 0; /** RequestAnimationFrame */
     arrowHoverRAF: number = 0; /** RequestAnimationFrame */
 
-    isDown: boolean | null = false;
+    isDown: boolean = false;
 
     horizontalScroll: HorizontalScroll = {
         scrollValue: 0,
@@ -22,12 +22,13 @@ export class Slider {
     }
 
     constructor(options: Options) {
-        this.slider = document.querySelector<HTMLElement>(options.selectorForSlider);
+        const slider = document.querySelector<HTMLElement>(options.selectorForSlider);
 
-        if(!this.slider){
+        if(!slider){
             throw Error("Slider element doesn't exist");
         }
 
+        this.slider = slider;
         this.leftArrow = new Arrow(options.selectorLeftArrow ?? '','left', this);
         this.rightArrow = new Arrow(options.selectorRightArrow ?? '', 'right', this);
 
@@ -66,9 +67,8 @@ export class Slider {
         this.leftArrow.arrowElement?.addEventListener('mouseleave', () => this.stopRAF());
     }
 
-    /**
-     * UPDATES
-     */
+    // UPDATES
+
     _updateSlider = (): void => {
         if(!this.slider || ! this.slider.isConnected) throw Error("Slider element doesn't exist");
 
@@ -105,6 +105,9 @@ export class Slider {
         this.horizontalScroll.scrollValue += parseFloat(value.toFixed(2));
     }
 
+
+    // EVENTS
+
     arrowClicked = (sens: number): void => {
         let delta = 200 * sens;
 
@@ -115,9 +118,6 @@ export class Slider {
         }
     }
 
-    /**
-     * EVENTS
-     */
     arrowsKeysPressed = (event: KeyboardEvent): void => {
         let delta = 0;
 
