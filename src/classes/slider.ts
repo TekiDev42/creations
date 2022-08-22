@@ -2,7 +2,6 @@ import {calculateTarget} from "../utils/calculateTarget";
 import {Assign} from "../utils/ObjectAssign";
 import {Arrow} from "./Arrow";
 
-
 export class Slider {
     slider: HTMLElement | null = null;
     leftArrow: Arrow;
@@ -23,12 +22,13 @@ export class Slider {
 
     constructor(options: Options) {
         this.slider = document.querySelector<HTMLElement>(options.selectorForSlider);
-        this.leftArrow = new Arrow(options.selectorLeftArrow ?? '','left', this);
-        this.rightArrow = new Arrow(options.selectorRightArrow ?? '', 'right', this);
 
         if(!this.slider){
             throw Error("Slider element doesn't exist");
         }
+
+        this.leftArrow = new Arrow(options.selectorLeftArrow ?? '','left', this);
+        this.rightArrow = new Arrow(options.selectorRightArrow ?? '', 'right', this);
 
         Assign<SliderStyleSheet>(this.slider, options.sliderStyleSheet);
 
@@ -44,11 +44,17 @@ export class Slider {
         window.addEventListener('mouseup', () => this.isDown = false );
         window.addEventListener('mousemove', this.mouseMove);
 
-        this.rightArrow.arrowElement?.addEventListener('click', () => this.arrowClicked(this.rightArrow.direction));
+        this.rightArrow.
+            arrowElement?.
+            addEventListener('click', () => this.arrowClicked(this.rightArrow.direction));
+
         this.rightArrow.arrowElement?.addEventListener('mouseenter', () => void 0);
         this.rightArrow.arrowElement?.addEventListener('mouseleave', () => void 0);
 
-        this.leftArrow.arrowElement?.addEventListener('click', () => this.arrowClicked(this.leftArrow.direction));
+        this.leftArrow.
+            arrowElement?.
+            addEventListener('click', () => this.arrowClicked(this.leftArrow.direction));
+
         this.leftArrow.arrowElement?.addEventListener('mouseenter', () => void 0);
         this.leftArrow.arrowElement?.addEventListener('mouseleave', () => void 0);
     }
