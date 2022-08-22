@@ -1,7 +1,7 @@
 import {Slider} from "./slider";
 import {Assign} from "../utils/ObjectAssign";
 
-import * as Arrows from '../svg/arrows';
+import * as Arrows from '../components/arrows';
 
 export class Arrow {
     arrowElement: HTMLElement;
