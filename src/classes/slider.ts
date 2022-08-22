@@ -119,23 +119,7 @@ export class Slider {
     }
 
     arrowsKeysPressed = (event: KeyboardEvent): void => {
-        let delta = 0;
-
-        switch (event.key){
-            case 'ArrowUp':
-            case 'ArrowLeft':
-                delta = -100;
-                break;
-
-            case 'ArrowDown':
-            case 'ArrowRight':
-                delta = 100;
-                break;
-
-            default:
-                return void 0;
-        }
-
+        const delta = deltaFromKey(event.key)
         this._updateTarget(delta);
 
         if(!this.raf) {
@@ -143,7 +127,7 @@ export class Slider {
         }
     }
 
-    stopRAF = () => {
+    stopRAF = (): void => {
         cancelAnimationFrame(this.arrowHoverRAF);
         this.arrowHoverRAF = 0;
     }
