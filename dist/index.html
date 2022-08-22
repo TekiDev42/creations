@@ -1,51 +1,71 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <title>Empty project</title>
         <meta charset="utf-8">
+
+        <style>
+            body, html{
+                overflow: hidden;
+            }
+
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            
+            :root{
+                --h-size: 400px;
+            }
+            
+            #app {
+                position: relative;
+                height: var(--h-size);
+                padding: 0;
+                margin: 0;
+            }
+
+            #slider{
+                display: flex;
+                display: -webkit-box;
+                position: relative;
+                height: var(--h-size);
+                align-items: center;
+                flex-wrap: nowrap;
+                overflow-x: hidden;
+                z-index: 0;
+            }
+
+            #slider .item {
+                display: flex;
+                position: relative;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                background: darkgray;
+                height: 100%;
+                width: calc(100vw / 3);
+                border-left: 1px solid black;
+                user-select: none;
+            }
+        </style>
     </head>
     <body>
-    <style>
-        body, html{
-            overflow: hidden;
-        }
-
-        #app{
-            display: flex;
-            display: -webkit-box;
-            position: relative;
-            height: 100vh;
-            align-items: center;
-            flex-wrap: nowrap;
-            overflow-x: hidden;
-        }
-
-        #app .item {
-            display: flex;
-            position: relative;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background: darkgray;
-            height: 400px;
-            width: calc(100vw / 3);
-            border-left: 1px solid black;
-        }
-    </style>
         <div id="app">
-            <div class="item">1</div>
-            <div class="item">2</div>
-            <div class="item">3</div>
-            <div class="item">4</div>
-            <div class="item">5</div>
-            <div class="item">6</div>
-            <div class="item">7</div>
-            <div class="item">8</div>
-            <div class="item">9</div>
-            <div class="item">10</div>
+            <div id="slider">
+                <div class="item">1</div>
+                <div class="item">2</div>
+                <div class="item">3</div>
+                <div class="item">4</div>
+                <div class="item">5</div>
+                <div class="item">6</div>
+                <div class="item">7</div>
+                <div class="item">8</div>
+                <div class="item">9</div>
+                <div class="item">10</div>
+            </div>
         </div>
-        <div id="app1"></div>
-        <div id="app2"></div>
         <script src="bundle.js"></script>
     </body>
 </html>

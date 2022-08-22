@@ -18,7 +18,7 @@ interface SliderStyleSheet {
 
 type Options = {
     selectorForSlider: string,
-    selectorLeftArrow: string,
-    selectorRightArrow: string,
+    selectorLeftArrow?: string,
+    selectorRightArrow?: string,
     sliderStyleSheet: SliderStyleSheet
 }

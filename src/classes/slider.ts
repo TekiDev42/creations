@@ -22,8 +22,8 @@ export class Slider {
 
     constructor(options: Options) {
         this.slider = document.querySelector<HTMLElement>(options.selectorForSlider);
-        this.leftArrow = new Arrow(options.selectorLeftArrow);
-        this.rightArrow = new Arrow(options.selectorRightArrow);
+        this.leftArrow = new Arrow(options.selectorLeftArrow ?? '','left', this);
+        this.rightArrow = new Arrow(options.selectorRightArrow ?? '', 'right', this);
 
         if(!this.slider){
             throw Error("Slider element doesn't exist");
@@ -37,10 +37,10 @@ export class Slider {
 
     _events = (): void => {
         window.addEventListener('wheel', this.replaceVerticalScrollByHorizontal );
-        window.addEventListener('keydown', this.ArrowsPressed );
+        window.addEventListener('keydown', this.ArrowsKeysPressed );
 
-        window.addEventListener('mousedown', (evt) => this.isDown = true );
-        window.addEventListener('mouseup', (evt) => this.isDown = false );
+        window.addEventListener('mousedown', () => this.isDown = true );
+        window.addEventListener('mouseup', () => this.isDown = false );
         window.addEventListener('mousemove', this.mouseMove);
     }
 
@@ -86,7 +86,7 @@ export class Slider {
     /**
      * EVENTS
      */
-    ArrowsPressed = (event: KeyboardEvent):void => {
+    ArrowsKeysPressed = (event: KeyboardEvent):void => {
         let delta = 0;
 
         switch (event.key){
