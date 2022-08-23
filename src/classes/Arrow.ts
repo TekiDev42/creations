@@ -21,9 +21,9 @@ export class Arrow {
             this.arrowElement = _element;
         else {
             this.arrowElement = this.createArrow(direction);
+            this.slider.slider?.parentElement?.append(this.arrowElement)
         }
 
-        this.slider.slider?.parentElement?.append(this.arrowElement)
         this.direction = direction === 'right' ? 1 : -1;
     }
 
