@@ -1,8 +1,8 @@
-# creations
+# Learning & practice Typescript
 
-Empty project.
+Slider with some events
 
-## Building and running on localhost
+## Building
 
 First install dependencies:
 
@@ -21,13 +21,3 @@ To create a development build:
 ```sh
 npm run build-dev
 ```
-
-## Running
-
-```sh
-node dist/bundle.js
-```
-
-## Credits
-
-Made with [createapp.dev](https://createapp.dev/)
