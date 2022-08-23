@@ -22,6 +22,7 @@ import {Slider} from "./classes/slider";
                         'will-change': 'transform'
                     },
                     // speedOptions: {}
+                    // eventOptions: {}
                 });
             }
         }

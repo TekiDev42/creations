@@ -19,7 +19,15 @@ type SpeedOptions = {
     mouseMove: number,
     onHover: number,
     onScroll: number,
-    keyPressed: number
+    keyPressed: number,
+}
+
+type EventsOptions = {
+    onScroll: boolean,
+    onArrowKeyboardPressed: boolean,
+    onMouseMove: boolean,
+    onArrowHover: boolean,
+    onArrowClick: boolean,
 }
 
 interface SliderStyleSheet {
@@ -48,5 +56,6 @@ type Options = {
     selectorLeftArrow?: string,
     selectorRightArrow?: string,
     sliderStyleSheet: SliderStyleSheet,
-    speedOptions?: SpeedOptions
+    speedOptions?: SpeedOptions,
+    eventsOptions?: EventsOptions,
 }

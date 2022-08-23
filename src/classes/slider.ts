@@ -18,6 +18,7 @@ export class Slider {
 
     horizontalScroll = DefaultOptions.horizontalScroll
     speedOptions = DefaultOptions.speedOptions
+    eventOptions = DefaultOptions.eventsOptions
 
     constructor(options: Options) {
         const slider = document.querySelector<HTMLElement>(options.selectorForSlider);
@@ -30,10 +31,17 @@ export class Slider {
         this.leftArrow = new Arrow(options.selectorLeftArrow ?? '','left', this);
         this.rightArrow = new Arrow(options.selectorRightArrow ?? '', 'right', this);
 
+        /**
+         * Adding properties without removing what's in the Style attribute, maybe?
+         */
         Assign<SliderStyleSheet>(this.slider, options.sliderStyleSheet);
 
         if (options.speedOptions){
             this.speedOptions = options.speedOptions;
+        }
+
+        if (options.eventsOptions){
+            this.eventOptions = options.eventsOptions;
         }
 
         this.horizontalScroll.scrollRight = this.slider.getBoundingClientRect().width - window.innerWidth;
@@ -41,32 +49,62 @@ export class Slider {
     }
 
     _events = (): void => {
-        this.slider.addEventListener('wheel', this.replaceVerticalScrollByHorizontal );
-        window.addEventListener('keydown', this.arrowsKeysPressed );
+        /**
+         * wheel
+         */
+        if(this.eventOptions.onScroll)
+            this.slider.addEventListener('wheel', this.replaceVerticalScrollByHorizontal );
 
-        this.slider.addEventListener('mousedown', () => this.isDown = true );
-        this.slider.addEventListener('mouseup', () => this.isDown = false );
-        this.slider.addEventListener('mousemove', this.mouseMove);
+        /**
+         * keydown
+         */
+        if(this.eventOptions.onArrowKeyboardPressed)
+            window.addEventListener('keydown', this.arrowsKeysPressed );
 
-        this.rightArrow.
-            arrowElement?.
-            addEventListener('click', () => this.arrowClicked(this.rightArrow.direction));
+        /**
+         * mousedown + mousemove
+         */
+        if(this.eventOptions.onMouseMove){
+            this.slider.addEventListener('mousedown', () => this.isDown = true );
+            this.slider.addEventListener('mouseup', () => this.isDown = false );
+            this.slider.addEventListener('mousemove', this.mouseMove);
+        }
 
-        this.rightArrow.
-            arrowElement?.
-            addEventListener('mouseenter', () => this.arrowHover(this.rightArrow.direction));
-
-        this.rightArrow.arrowElement?.addEventListener('mouseleave', () => this.stopRAF());
-
-        this.leftArrow.
+        /**
+         * On click on Right Arrow
+         */
+        if(this.eventOptions.onArrowClick)
+            this.rightArrow.
+                arrowElement?.
+                addEventListener('click', () => this.arrowClicked(this.rightArrow.direction));
+        /**
+         * On click on Left Arrow
+         */
+        if(this.eventOptions.onArrowClick)
+            this.leftArrow.
             arrowElement?.
             addEventListener('click', () => this.arrowClicked(this.leftArrow.direction));
 
-        this.leftArrow.
+        /**
+         * On hover on Right arrow
+         */
+        if(this.eventOptions.onArrowHover){
+            this.rightArrow.
             arrowElement?.
-            addEventListener('mouseenter', () => this.arrowHover(this.leftArrow.direction));
+            addEventListener('mouseenter', () => this.arrowHover(this.rightArrow.direction));
 
-        this.leftArrow.arrowElement?.addEventListener('mouseleave', () => this.stopRAF());
+            this.rightArrow.arrowElement?.addEventListener('mouseleave', () => this.stopRAF());
+        }
+        /**
+         * On hover on Left arrow
+         */
+        if(this.eventOptions.onArrowHover){
+            this.leftArrow.
+                arrowElement?.
+                addEventListener('mouseenter', () => this.arrowHover(this.leftArrow.direction));
+
+            this.leftArrow.arrowElement?.addEventListener('mouseleave', () => this.stopRAF());
+        }
     }
 
     // UPDATES

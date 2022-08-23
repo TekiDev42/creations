@@ -14,3 +14,11 @@ export const speedOptions: SpeedOptions = {
     onScroll: 1,
     keyPressed: 1
 };
+
+export const eventsOptions: EventsOptions = {
+    onScroll: true,
+    onArrowKeyboardPressed: true,
+    onMouseMove: true,
+    onArrowHover: true,
+    onArrowClick: true,
+}
