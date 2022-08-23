@@ -20,7 +20,7 @@ export class Slider {
     speedOptions = DefaultOptions.speedOptions
     eventOptions = DefaultOptions.eventsOptions
 
-    constructor(options: Options) {
+    constructor(options: Options){
         const slider = document.querySelector<HTMLElement>(options.selectorForSlider);
 
         if(!slider){
@@ -115,8 +115,8 @@ export class Slider {
         this._updateValue();
         this.changeDisplayArrow();
 
-        if(this.horizontalScroll.scrollValue === this.horizontalScroll.oldValue) {
-            if(this.raf) {
+        if(this.horizontalScroll.scrollValue === this.horizontalScroll.oldValue){
+            if(this.raf){
                 cancelAnimationFrame(this.raf);
                 this.raf = 0;
             }
