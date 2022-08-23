@@ -110,7 +110,7 @@ export class Slider {
     // UPDATES
 
     _updateSlider = (): void => {
-        if(!this.slider || ! this.slider.isConnected) throw Error("Slider element doesn't exist");
+        if(!this.slider || !this.slider.isConnected) throw Error("Slider element doesn't exist");
 
         this._updateValue();
         this.changeDisplayArrow();
