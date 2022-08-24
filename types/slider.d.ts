@@ -58,4 +58,5 @@ type Options = {
     sliderStyleSheet: SliderStyleSheet,
     speedOptions?: SpeedOptions,
     eventsOptions?: EventsOptions,
+    arrowStyle?: ArrowStyleSheet,
 }

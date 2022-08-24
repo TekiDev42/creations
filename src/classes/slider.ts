@@ -28,8 +28,8 @@ export class Slider {
         }
 
         this.slider = slider;
-        this.leftArrow = new Arrow(options.selectorLeftArrow ?? '','left', this);
-        this.rightArrow = new Arrow(options.selectorRightArrow ?? '', 'right', this);
+        this.leftArrow = new Arrow(options.selectorLeftArrow ?? '','left', this, options.arrowStyle);
+        this.rightArrow = new Arrow(options.selectorRightArrow ?? '', 'right', this, options.arrowStyle);
 
         /**
          * Adding properties without removing what's in the Style attribute, maybe?

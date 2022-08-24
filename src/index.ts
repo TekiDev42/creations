@@ -23,6 +23,7 @@ import {Slider} from "./classes/slider";
                     },
                     // speedOptions: {}
                     // eventOptions: {}
+                    // arrowStyle: {}
                 });
             }
         }
