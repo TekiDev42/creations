@@ -93,7 +93,10 @@ export class Slider {
             arrowElement?.
             addEventListener('mouseenter', () => this.arrowHover(this.rightArrow.direction));
 
-            this.rightArrow.arrowElement?.addEventListener('mouseleave', () => this.stopRAF());
+            this.rightArrow.arrowElement?.addEventListener('mouseleave', () => {
+                this._stopRAF(this.arrowHoverRAF);
+                this.arrowHoverRAF = 0;
+            });
         }
         /**
          * On hover on Left arrow
@@ -103,7 +106,10 @@ export class Slider {
                 arrowElement?.
                 addEventListener('mouseenter', () => this.arrowHover(this.leftArrow.direction));
 
-            this.leftArrow.arrowElement?.addEventListener('mouseleave', () => this.stopRAF());
+            this.leftArrow.arrowElement?.addEventListener('mouseleave', () => {
+                this._stopRAF(this.arrowHoverRAF);
+                this.arrowHoverRAF = 0;
+            });
         }
     }
 
@@ -117,7 +123,7 @@ export class Slider {
 
         if(this.horizontalScroll.scrollValue === this.horizontalScroll.oldValue){
             if(this.raf){
-                cancelAnimationFrame(this.raf);
+                this._stopRAF(this.raf);
                 this.raf = 0;
             }
             return;
@@ -143,6 +149,15 @@ export class Slider {
         this.horizontalScroll.scrollValue += parseFloat(value.toFixed(2));
     }
 
+    _RAF = (): void => {
+        if(!this.raf) {
+            this.raf = requestAnimationFrame(this._updateSlider);
+        }
+    }
+
+    _stopRAF = (RAF: number): void => {
+        cancelAnimationFrame(RAF);
+    }
 
     // EVENTS
 
@@ -151,18 +166,14 @@ export class Slider {
 
         this._updateTarget(delta);
 
-        if(!this.raf) {
-            this.raf = requestAnimationFrame(this._updateSlider);
-        }
+        this._RAF();
     }
 
     arrowsKeysPressed = (event: KeyboardEvent): void => {
         const delta = deltaFromKey(event.key);
         this._updateTarget(delta * this.speedOptions.keyPressed);
 
-        if(!this.raf) {
-            this.raf = requestAnimationFrame(this._updateSlider);
-        }
+        this._RAF();
     }
 
     arrowHover = (direction: number) => {
@@ -172,20 +183,19 @@ export class Slider {
 
         const animation = () => {
             if( ! this.arrowHoverRAF ) {
-                this.stopRAF();
+                this._stopRAF(this.arrowHoverRAF);
+                this.arrowHoverRAF = 0;
                 return;
             }
 
             let delta = this.speedOptions.onHover * direction;
             this._updateTarget(delta);
-            this.arrowHoverRAF = requestAnimationFrame(animation)
+            this.arrowHoverRAF = requestAnimationFrame(animation);
         }
 
-        this.arrowHoverRAF = requestAnimationFrame(animation)
+        this.arrowHoverRAF = requestAnimationFrame(animation);
 
-        if(!this.raf) {
-            this.raf = requestAnimationFrame(this._updateSlider);
-        }
+        this._RAF();
     }
 
     mouseMove = (event: MouseEvent): void => {
@@ -227,10 +237,5 @@ export class Slider {
         Assign<ArrowStyleSheet>(this.rightArrow.arrowElement, {
             display: rightDisplay
         });
-    }
-
-    stopRAF = (): void => {
-        cancelAnimationFrame(this.arrowHoverRAF);
-        this.arrowHoverRAF = 0;
     }
 }
